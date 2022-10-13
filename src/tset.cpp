@@ -93,10 +93,7 @@ int TSet::operator!=(const TSet& s) const // сравнение
 
 TSet TSet::operator+(const TSet& s) // объединение
 {
-    TSet tmp(this->MaxPower > s.MaxPower ? this->MaxPower : s.MaxPower);
-    tmp.BitField = this->BitField | s.BitField;
-
-    return tmp;
+    return TSet(this->BitField | s.BitField);
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
@@ -119,24 +116,30 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet& s) // пересечение
 {
-    TSet tmp(this->MaxPower > s.MaxPower ? this->MaxPower : s.MaxPower);
-    tmp.BitField = this->BitField & s.BitField;
-
-    return tmp;
+    return TSet(this->BitField & s.BitField);
 }
 
 TSet TSet::operator~(void) // дополнение
 {
-    TSet tmp(this->MaxPower);
-    tmp.BitField = ~this->BitField;
-
-    return tmp;
+    return TSet(~BitField);
 }
 
 // перегрузка ввода/вывода
 
 istream& operator>>(istream& istr, TSet& s) // ввод
 {
+    char in;
+    char tmp;
+    istr >> in;
+    while (in != ' ') {
+        istr >> tmp;
+        s.InsElem(tmp);
+        istr >> in;
+        while (in != ',') {
+            istr >> in;
+        }
+    }
+    
     return istr;
 }
 
